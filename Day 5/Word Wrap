@@ -1,0 +1,22 @@
+class Solution{
+    public int solveWordWrap (int[] nums, int k){
+        int n=nums.length;
+        int[][] dp=new int[n][k];
+        for(int i=0;i<n;i++){
+            Arrays.fill(dp[i],-1);
+        }
+        return memo(nums,n,k,k-nums[0],1,dp);
+    }
+    
+    private int memo(int[] len, int n, int lineLen, int charsLeft, int i, int[][] dp){
+        if(i==n) return 0;
+        if(dp[i][charsLeft]!=-1) return dp[i][charsLeft];
+        
+        int nextLine=charsLeft*charsLeft+memo(len,n,lineLen,lineLen-len[i],i+1,dp);
+        if(len[i]+1>charsLeft)
+            return dp[i][charsLeft] = nextLine;
+            
+        int sameLine=memo(len,n,lineLen,charsLeft-len[i]-1,i+1,dp);
+        return dp[i][charsLeft] = Math.min(nextLine,sameLine);
+    }
+}
