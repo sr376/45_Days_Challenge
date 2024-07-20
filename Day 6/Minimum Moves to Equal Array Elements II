@@ -11,3 +11,51 @@ class Solution {
         return count;
     }
 }
+
+
+class Solution {
+    public int minMoves2(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+        int n = nums.length;
+        int median = quickSelect(nums, n / 2);
+        int count = 0;
+        for (int num : nums) {
+            count += Math.abs(num - median);
+        }
+        return count;
+    }
+
+    private int quickSelect(int[] nums, int k) {
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int pivot = partition(nums, left, right);
+            if (pivot == k) {
+                break;
+            } else if (pivot < k) {
+                left = pivot + 1;
+            } else {
+                right = pivot - 1;
+            }
+        }
+        return nums[k];
+    }
+
+    private int partition(int[] nums, int left, int right) {
+        int pivot = nums[right];
+        int l = left;
+        for (int r = left; r < right; r++) {
+            if (nums[r] < pivot) {
+                swap(nums, l++, r);
+            }
+        }
+        swap(nums, l, right);
+        return l;
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
