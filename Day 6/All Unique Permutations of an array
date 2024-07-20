@@ -1,0 +1,38 @@
+class Solution {
+    static ArrayList<ArrayList<Integer>> uniquePerms(ArrayList<Integer> arr , int n) {
+        // code here
+        Collections.sort(arr);
+        ArrayList<ArrayList<Integer>> global=new ArrayList<>();
+        
+        boolean map[]=new boolean[arr.size()];
+        
+        Solve(global,arr,new ArrayList<Integer>(),map);
+        return global;
+    }
+    
+    static void Solve(ArrayList<ArrayList<Integer>> global,ArrayList<Integer> arr,
+    ArrayList<Integer> local,boolean[] map){
+        
+       if(local.size()==arr.size())
+       {
+           global.add(new ArrayList<>(local));
+           return;
+       }
+       
+       for(int i=0;i<arr.size();i++){
+        
+        if ( (i > 0 && arr.get(i)== arr.get(i - 1) && !map[i - 1])) {
+                continue; // Skip duplicate elements
+            }
+           if(map[i]==false){
+               map[i]=true;
+               local.add(arr.get(i));
+               
+               Solve(global,arr,local,map);
+               
+               local.remove(local.size()-1);
+               map[i]=false;
+           }
+       }
+    }
+};
