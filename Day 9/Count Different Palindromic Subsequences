@@ -1,0 +1,34 @@
+class Solution {
+    public int countPalindromicSubsequences(String s) {
+        int m = 1000000007;
+        char[] sArr = s.toCharArray();
+        int l = sArr.length, i, j, front, back;
+        int[][] prevDp = new int[l][4];
+        int[][] currDp = new int[l][4];
+        int[][] nextDp = new int[l][4];
+        int[][] t;
+        for (i = 0 ; i < l ; i ++) {
+            currDp[i][((int) sArr[i]) - 97] = 1;
+        }
+        for (i = 1 ; i < l ; i ++) {
+            front = 0; back = i;
+            for (; back < l ; front ++, back ++) {
+                for (j = 0 ; j < 4 ; j ++) {
+                    if ((int) sArr[front] == j + 97) {
+                        nextDp[front][j] = currDp[front][j];
+                    } else {
+                        nextDp[front][j] = currDp[front + 1][j];
+                    }
+                }
+                if (sArr[front] == sArr[back]) {
+                    nextDp[front][(int) sArr[front] - 97] = (int)((2L + prevDp[front + 1][0] + prevDp[front + 1][1] + prevDp[front + 1][2] + prevDp[front + 1][3]) % m);
+                }
+            }
+            t = prevDp;
+            prevDp = currDp;
+            currDp = nextDp;
+            nextDp = t;
+        }
+        return (int) (((long)currDp[0][0] + currDp[0][1] + currDp[0][2] + currDp[0][3]) % m);
+    }
+}
