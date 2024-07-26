@@ -1,0 +1,32 @@
+class Solution {
+    int keypad[][]={{1,2,3},{4,5,6},{7,8,9},{-1,0,-1}};
+    int dirX[]={0,0,1,-1};
+    int dirY[]={-1,1,0,0};
+    public long getCount(int n) {
+        Long dp[][]=new Long[10][n+1];
+        long ans=0;
+       for(int i=0;i<4;i++){
+           for(int j=0;j<3;j++){
+               if(keypad[i][j]!=-1){
+                   ans+=solve(i,j,n,dp);
+               }
+           }
+       }
+       return ans;
+    }
+    long solve(int i,int j,int n,Long dp[][]){
+        if(n==1) return 1;
+        if(dp[keypad[i][j]][n]!=null) return dp[keypad[i][j]][n];
+        long ans=0;
+        ans+=solve(i,j,n-1,dp);
+        for(int k=0;k<4;k++){
+            int newX=i+dirX[k];
+            int newY=j+dirY[k];
+            if(newX>=0 && newY>=0 && newX<4 && newY<3 && keypad[newX][newY]!=-1){
+                ans+=solve(newX,newY,n-1,dp);
+            }
+        }
+        return dp[keypad[i][j]][n]=ans;
+    }
+    
+}
