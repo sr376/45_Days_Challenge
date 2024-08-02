@@ -1,0 +1,56 @@
+import java.util.*;
+
+class Solution {
+    // Function to find the minimum number of swaps required to sort the array.
+    public int minSwaps(int[] nums) {
+        int n = nums.length;
+
+        // Create an array of pairs where each pair is (value, index)
+        Pair[] arr = new Pair[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = new Pair(nums[i], i);
+        }
+
+        // Sort the array by the values of the elements
+        Arrays.sort(arr, (a, b) -> a.value - b.value);
+
+        // Array to check if the element has been visited
+        boolean[] visited = new boolean[n];
+        int swaps = 0;
+
+        // Traverse the sorted array and calculate the minimum swaps required
+        for (int i = 0; i < n; i++) {
+            // If already visited or already in the correct place, continue
+            if (visited[i] || arr[i].index == i) {
+                continue;
+            }
+
+            // Calculate the size of the cycle
+            int cycleSize = 0;
+            int j = i;
+            while (!visited[j]) {
+                visited[j] = true;
+                j = arr[j].index;
+                cycleSize++;
+            }
+
+            // If cycle size is greater than 1, then add (cycleSize - 1) to swaps
+            if (cycleSize > 1) {
+                swaps += (cycleSize - 1);
+            }
+        }
+
+        return swaps;
+    }
+
+    // Helper class to store the value and original index of elements
+    static class Pair {
+        int value;
+        int index;
+
+        Pair(int value, int index) {
+            this.value = value;
+            this.index = index;
+        }
+    }
+}
