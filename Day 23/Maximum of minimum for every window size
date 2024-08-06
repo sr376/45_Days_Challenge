@@ -1,0 +1,59 @@
+class Solution {
+    // Function to find maximum of minimums of every window size.
+    static int[] maxOfMin(int[] arr, int n) {
+        // Arrays to store nearest smaller elements on left and right
+        int[] left = new int[n];
+        int[] right = new int[n];
+        Arrays.fill(right, n);
+        Arrays.fill(left, -1);
+
+        // Stack to find nearest smaller elements
+        Stack<Integer> stack = new Stack<>();
+
+        // Fill left array
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && arr[stack.peek()] >= arr[i]) {
+                stack.pop();
+            }
+            if (!stack.isEmpty()) {
+                left[i] = stack.peek();
+            }
+            stack.push(i);
+        }
+
+        stack.clear();
+
+        // Fill right array
+        for (int i = n - 1; i >= 0; i--) {
+            while (!stack.isEmpty() && arr[stack.peek()] >= arr[i]) {
+                stack.pop();
+            }
+            if (!stack.isEmpty()) {
+                right[i] = stack.peek();
+            }
+            stack.push(i);
+        }
+
+        // Initialize result array
+        int[] result = new int[n + 1];
+
+        // Fill result array based on the lengths
+        for (int i = 0; i < n; i++) {
+            int len = right[i] - left[i] - 1;
+            result[len] = Math.max(result[len], arr[i]);
+        }
+
+        // Fill the rest of the entries
+        for (int i = n - 1; i >= 1; i--) {
+            result[i] = Math.max(result[i], result[i + 1]);
+        }
+
+        // Result for window sizes from 1 to n
+        int[] res = new int[n];
+        for (int i = 1; i <= n; i++) {
+            res[i - 1] = result[i];
+        }
+
+        return res;
+    }
+}
