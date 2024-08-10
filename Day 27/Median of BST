@@ -1,0 +1,38 @@
+class Tree
+{
+    public static int count(Node root) {
+        if(root == null) return 0;
+        int x = count(root.left);
+        int y = count(root.right);
+        return x + y + 1;
+    }
+
+    public static int solve(Node root, int[] k) {
+        if(root == null) return -1;
+
+        int left = solve(root.left, k);
+        if(left != -1) return left;
+
+        k[0]--;  
+        if(k[0] == 0) return root.data;
+
+        return solve(root.right, k);
+    }
+
+    public static float findMedian(Node root) {
+        int n = count(root);
+        
+        if(n % 2 == 1) {
+            int[] k = new int[]{n / 2 + 1};
+            return solve(root, k);
+        }
+        
+        else {
+            int[] k1 = new int[]{n / 2};
+            int[] k2 = new int[]{n / 2 + 1};
+            int first = solve(root, k1);
+            int second = solve(root, k2);
+            return (first + second) / (float)2.0;
+        }
+    }
+}
