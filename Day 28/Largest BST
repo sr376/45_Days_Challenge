@@ -1,0 +1,32 @@
+class Solution{
+    
+  static int largestBst(Node root) {
+        if (root == null)
+            return 0;
+        if (isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE)) {
+
+            return countNodes(root);
+        } else {
+
+            int left = largestBst(root.left);
+            int right = largestBst(root.right);
+            return Math.max(left, right);
+        }
+    }
+
+    static boolean isValidBST(Node root, int minVal, int maxVal) {
+        if (root == null)
+            return true;
+        if (root.data >= maxVal || root.data <= minVal)
+            return false;
+        return isValidBST(root.left, minVal, root.data) && isValidBST(root.right, root.data, maxVal);
+    }
+
+    static int countNodes(Node root) {
+        if (root == null)
+            return 0;
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+
+    
+}
