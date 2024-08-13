@@ -1,0 +1,28 @@
+class Solution {
+    private List<TreeNode> generateTreesHelp(int start, int end) {
+        if (start > end) {
+            List<TreeNode> trees = new ArrayList<>();
+            trees.add(null);
+            return trees;
+        }
+
+        List<TreeNode> trees = new ArrayList<>();
+        for (int rootValue = start; rootValue <= end; rootValue++) {
+
+            List<TreeNode> leftSubtrees = generateTreesHelp(start, rootValue - 1);
+            List<TreeNode> rightSubtrees = generateTreesHelp(rootValue + 1, end);
+
+            for (TreeNode left : leftSubtrees) {
+                for (TreeNode right : rightSubtrees) {
+                    TreeNode root = new TreeNode(rootValue, left, right);
+                    trees.add(root);
+                }
+            }
+        }
+        return trees;
+    }
+
+    public List<TreeNode> generateTrees(int n) {
+        return generateTreesHelp(1, n);
+    }
+}
