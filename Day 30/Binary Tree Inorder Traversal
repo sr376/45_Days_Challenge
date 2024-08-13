@@ -1,0 +1,19 @@
+public class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+
+        while (root != null || !stack.isEmpty()) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left; // Traverse left subtree
+            }
+
+            root = stack.pop();
+            result.add(root.val); // Visit root node
+            root = root.right;    // Traverse right subtree
+        }
+
+        return result;
+    }
+}
