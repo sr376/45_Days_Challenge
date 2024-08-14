@@ -1,0 +1,20 @@
+class Solution {
+    public TreeNode constructFromPrePost(int[] pre, int[] post) {
+        return sol(pre,post,0,pre.length-1,0,post.length-1);
+    }
+    public TreeNode sol(int[] pre,int post[],int pis,int pie,int pos,int poe){
+        if(pos>poe) return null;
+        TreeNode root=new TreeNode(pre[pis]);
+        if(pis==pie) return root;
+        int idx=pos;
+        for(int i=pos;i<poe;i++){
+            if(pre[pis+1]==post[i]){
+                idx=i;
+                break;
+            }
+        }
+        root.left=sol(pre,post,pis+1,idx-pos+pis+1,pos,idx);
+        root.right=sol(pre,post,idx-pos+pis+2,pie,idx+1,poe-1);
+        return root;
+    }
+}
