@@ -1,0 +1,37 @@
+class GfG {
+    int findDist(Node root, int a, int b) {
+        // Your code here
+        //first find lca and find dist between two nodes from lca and add them
+        Node lca=findLca(root,a,b);
+        int d1=dfs(lca,a);
+        int d2=dfs(lca,b);
+        return d1+d2;
+    }
+    int dfs(Node root,int a){
+        if(root==null)return Integer.MAX_VALUE;
+        if(root.data==a)return 0;
+        int left=dfs(root.left,a);
+        int right=dfs(root.right,a);
+        int ans=Integer.MAX_VALUE;
+        if(left!=Integer.MAX_VALUE){
+            ans=Math.min(ans,1+left);
+        }
+        if(right!=Integer.MAX_VALUE){
+            ans=Math.min(ans,1+right);
+        }
+        return ans;
+    }
+    Node findLca(Node root,int a,int b){
+        if(root==null||root.data==a||root.data==b)return root;
+        Node left=findLca(root.left,a,b);
+        Node right=findLca(root.right,a,b);
+        if(left!=null && right!=null){
+            //lca found
+            return root;
+        }
+        if(left==null)return right;
+        
+        return left;
+      
+    }
+}
