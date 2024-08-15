@@ -1,0 +1,40 @@
+static class Solution {
+    // Function that constructs BST from its preorder traversal.
+     
+    public Node Bst(int[] arr,int n)
+    {
+        //Write your code here
+        
+         if(n == 0  || arr == null){
+            return null;
+        }
+        boolean found = true;
+        Node node = new Node(arr[0]);
+        Node temp = node;
+        for(int i=1;i<n;i++){
+            int x= arr[i];
+            
+            if(temp.data >= x && temp.left == null){
+                temp.left = new Node(x);
+                found = true;
+            }
+            else if(temp.data >= x && temp.left != null){
+                temp = temp.left;
+                found = false;
+                i = i-1;
+            }
+            else if(temp.data < x && temp.right == null){
+                temp.right = new Node(x);
+                found = true;
+            }
+           else if(temp.data < x && temp.right != null){
+                temp = temp.right;
+                found = false;
+                i = i-1;
+            }
+            if(found){
+             temp = node;} 
+        }
+        return node;
+    }
+}
