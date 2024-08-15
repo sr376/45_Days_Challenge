@@ -1,0 +1,14 @@
+class Solution{
+     int i=-1;
+    Node constructTree(int n, int pre[], char preLN[]){
+	    // code here
+        if(i==n)return null;
+        i++;
+        Node root=new Node(pre[i]);
+        if(preLN[i]=='L')return root;
+        root.left=constructTree(n, pre, preLN);
+        root.right=constructTree(n, pre, preLN);
+        return root;
+
+    }
+}
