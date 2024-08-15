@@ -1,0 +1,30 @@
+class Solution {
+    Node head;
+    Node prev;
+
+    Node bToDLL(Node root) {
+        head = null;
+        prev = null;
+        convertToDLL(root);
+        return head;
+    }
+
+    void convertToDLL(Node root) {
+        if (root == null) {
+            return;
+        }
+
+        convertToDLL(root.left);
+
+        if (prev == null) {
+            head = root;
+        } else {
+            prev.right = root;
+            root.left = prev;
+        }
+
+        prev = root;
+
+        convertToDLL(root.right);
+    }
+}
