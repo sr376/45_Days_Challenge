@@ -1,0 +1,34 @@
+class Solution {
+    int res;
+    int[] root;
+
+    public int findRoot(int computerA){
+        if(root[computerA] != computerA){
+
+            root[computerA] = findRoot(root[computerA]);
+        }
+        return root[computerA];
+    }
+    public void makeConnection(int computerA, int computerB){
+        int rootA = findRoot(computerA);
+        int rootB = findRoot(computerB);
+        if(rootA != rootB){
+            res--;
+            root[rootA] = rootB;
+        }
+    }
+    public int makeConnected(int n, int[][] connections) {
+        if (n - 1 > connections.length) {
+            return -1;
+        }
+        root = new int[n];
+        res = n-1; 
+        for(int i=0; i<n; i++){
+            root[i] = i;
+        }
+        for(int i=0; i<connections.length; i++){
+            makeConnection(connections[i][0], connections[i][1]);
+        }
+        return res;
+    }
+}
