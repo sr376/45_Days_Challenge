@@ -1,0 +1,29 @@
+class Solution {
+    public void Helper(int i , int j , int[][] mat , String asf , ArrayList<String> ans){
+        int n = mat.length;
+        int m = mat[0].length;
+        
+        if(i < 0 || j < 0 || i >= n || j >= m || mat[i][j] == 0){
+            return;
+        }
+        
+        if(i == n - 1 && j == m - 1){
+            ans.add(asf);
+            return;
+        }
+        
+        
+        mat[i][j] = 0;
+        Helper(i + 1 , j , mat , asf + 'D' , ans);
+        Helper(i - 1 , j , mat , asf + 'U' , ans);
+        Helper(i , j + 1 , mat , asf + 'R' , ans);
+        Helper(i , j - 1 , mat , asf + 'L' , ans);
+        mat[i][j] = 1;
+    }
+    public ArrayList<String> findPath(int[][] mat) {
+        ArrayList<String> ans = new ArrayList<>();
+        Helper(0 , 0, mat , "" , ans);
+        
+        return ans;
+    }
+}
