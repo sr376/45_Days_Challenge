@@ -1,0 +1,41 @@
+
+class Solution
+{
+
+    class cell{
+        int x,y,dis;
+        public cell(int x,int y,int dis){
+            this.x=x;
+            this.y=y;
+            this.dis=dis;
+        }
+    }
+    public int minStepToReachTarget(int KnightPos[], int TargetPos[], int N)
+    {
+        // Code here
+        int row[] = {-2,-1,1,2,-2,-1,1,2};
+        int col[] = {-1,-2,-2,-1,1,2,2,1};
+        Queue<cell> q = new LinkedList<>();
+        q.add(new cell(KnightPos[0],KnightPos[1],0));
+        cell t;
+        int x,y;
+        boolean visited[][] = new boolean[N+1][N+1];
+        visited[KnightPos[0]][KnightPos[1]]=true;
+        while(!q.isEmpty()){
+            t = q.poll();
+            if(t.x == TargetPos[0] && t.y == TargetPos[1]){
+                return t.dis;
+            }
+            for(int i=0;i<8;i++){
+                x = t.x + row[i];
+                y = t.y + col[i];
+                if(x >= 1 && x <= N && y >= 1 && y <= N && !visited[x][y]){
+                    visited[x][y]=true;
+                    q.add(new cell(x,y,t.dis+1));
+                }
+            }
+            
+        }
+        return Integer.MAX_VALUE;
+    }
+}
