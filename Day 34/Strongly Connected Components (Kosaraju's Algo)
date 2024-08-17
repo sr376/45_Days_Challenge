@@ -1,0 +1,77 @@
+class Solution
+{
+    public void dfsReverse(int node,ArrayList<ArrayList<Integer>> reverse,int[] visited){
+        
+        visited[node]=1;
+        
+        for(int neigh:reverse.get(node)){
+            if(visited[neigh]==0){
+                dfsReverse(neigh,reverse,visited);
+            }
+        }
+        
+    }
+    
+    public void dfs(int node,ArrayList<ArrayList<Integer>> adj,Stack<Integer> st,int[] visited){
+        
+        visited[node]=1;
+        
+        for(int neigh:adj.get(node)){
+            if(visited[neigh]==0){
+                dfs(neigh,adj,st,visited);
+            }
+        }
+        
+        st.push(node);
+        
+    }
+    
+    //Function to find number of strongly connected components in the graph.
+    public int kosaraju(int V, ArrayList<ArrayList<Integer>> adj)
+    {
+        
+        ArrayList<ArrayList<Integer>> reverse = new ArrayList<>();
+        
+        for(int i=0;i<V;i++){
+            reverse.add(new ArrayList<Integer>());
+        }
+        
+        for(int i=0;i<adj.size();i++){
+            
+            for(int value:adj.get(i)){
+                
+                reverse.get(value).add(i);
+                
+            }
+            
+        }
+        
+        int visited[] = new int[V];
+         Stack<Integer> st = new Stack<>();
+        
+        for(int i=0;i<V;i++){
+            if(visited[i]==0){
+                dfs(i,adj,st,visited);
+            }
+        }
+        
+        Arrays.fill(visited,0);
+        
+        int scc = 0;
+        
+        while(!st.isEmpty()){
+            
+            int top = st.pop();
+            if(visited[top]==0){
+                
+                scc++;
+                dfsReverse(top,reverse,visited);
+                
+            }
+            
+        }
+        
+        return scc;
+        
+    }
+}
