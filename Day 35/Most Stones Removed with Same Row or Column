@@ -1,0 +1,86 @@
+ class disjoints
+{
+	 int parent[];
+	 int rank[];
+	 
+	 disjoints(int V) {
+		parent=new int[V];
+		rank=new int[V];
+		
+		for(int i=0; i<V; i++) 
+		{
+			parent[i]=i;
+			rank[i]=0;
+		}
+	}
+
+
+int findpar(int node)
+{
+	if(node==parent[node])
+	{
+		return node;
+	}
+	return parent[node]=findpar(parent[node]);
+}
+
+ void union(int u,int v)
+{
+	u=findpar(u);
+	v=findpar(v);
+	
+	if(rank[u]<rank[v]) 
+	{
+	 parent[u]=v;	
+	}
+	else if(rank[v]<rank[u]) 
+	{
+	 parent[v]=u;	
+	}
+	else
+	{
+	parent[v]=u;	
+		rank[u]++;
+	}
+}
+}
+
+
+
+
+class Solution {
+    public int removeStones(int[][] stones) 
+    {
+    int n=stones.length;
+    int maxrow=0;
+    int maxcol=0;
+    for(int i=0; i<n; i++)
+    {
+    maxrow=Math.max(maxrow,stones[i][0]);
+    maxcol=Math.max(maxcol,stones[i][1]);
+    }
+    disjoints ds=new disjoints(maxrow+maxcol+2);
+    HashMap<Integer,Integer> map=new HashMap<>();
+    for(int i=0; i<n; i++)
+    {
+        int noderow=stones[i][0];
+
+        int nodecol=stones[i][1]+maxrow+1;
+				//for connections
+        ds.union(noderow,nodecol);
+				//for creating the individual connections
+        map.put(noderow,1);
+        map.put(nodecol,1);
+    }
+    int count=0;
+    for(Map.Entry<Integer,Integer>e: map.entrySet())
+    {
+			//check the ultimate parents
+        if(ds.findpar(e.getKey())==e.getKey())
+				{
+            count++;
+        }
+    }
+    return n-count;
+    }
+}
