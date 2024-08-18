@@ -1,0 +1,35 @@
+class Solution {
+  Queue<int[]> queue = new ArrayDeque<>();
+  int[][] moves = new int[][] {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+  private void addToQueue(int[][] grid, int n, int[] coordinates) {
+    for (var move : moves) {
+      var i = coordinates[0] + move[0];
+      var j = coordinates[1] + move[1];
+
+      if (i < 0 || i > n-1 || j < 0 || j > n-1 || grid[i][j] != 0)
+        continue;
+
+      queue.offer(new int[] {i, j});
+      grid[i][j] = 2;
+    }
+  }
+
+  public int maxDistance(int[][] grid) {
+    var n = grid.length;
+
+    for (var i=0; i<n; i++)
+      for (var j=0; j<n; j++)
+        if (grid[i][j] == 1)
+          addToQueue(grid, n, new int[] {i, j});
+
+    if (queue.isEmpty()) return -1;
+    var max = 0;
+
+    for (; !queue.isEmpty(); max++)
+      for (var i = queue.size(); i > 0; i--)
+        addToQueue(grid, n, queue.poll());
+
+    return max;
+  }
+}
