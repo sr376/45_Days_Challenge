@@ -1,0 +1,56 @@
+class Pair {
+    String s;
+    double wt;
+
+    public Pair(String s, double wt) {
+        this.s = s;
+        this.wt = wt;
+    }
+}
+
+class Solution {
+    double val = -1;
+
+    public void find(Map<String, List<Pair>> map, String a, String b, double wt, Set<String> set) {
+        if (a.equals(b)) {
+            val = wt;
+            return;
+        }
+        set.add(a);
+        for (Pair p : map.get(a)) {
+            String s = p.s;
+            double wts = p.wt;
+            if (!set.contains(s))
+                find(map, s, b, wt * wts, set);
+        }
+    }
+
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        int n = values.length;
+        Map<String, List<Pair>> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            String a = equations.get(i).get(0);
+            String b = equations.get(i).get(1);
+            if (!map.containsKey(a))
+                map.put(a, new ArrayList<>());
+            if (!map.containsKey(b))
+                map.put(b, new ArrayList<>());
+            map.get(a).add(new Pair(b, values[i]));
+            map.get(b).add(new Pair(a, 1 / values[i]));
+        }
+        n = queries.size();
+        double ans[] = new double[n];
+        for (int i = 0; i < n; i++) {
+            String a = queries.get(i).get(0);
+            String b = queries.get(i).get(1);
+            if (!map.containsKey(a) || !map.containsKey(b))
+                ans[i] = -1.000;
+            else {
+                val = -1;
+                find(map, a, b, 1, new HashSet<>());
+                ans[i] = val;
+            }
+        }
+        return ans;
+    }
+}
