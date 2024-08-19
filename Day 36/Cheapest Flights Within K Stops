@@ -1,0 +1,21 @@
+class Solution {
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int atmost_k) {
+        int[] cheapest_price = new int[n];
+        Arrays.fill(cheapest_price, Integer.MAX_VALUE);
+        cheapest_price[src] = 0;
+
+        for (int k = 0; k <= atmost_k; k++) {
+            int[] tempPrices = Arrays.copyOf(cheapest_price, n);
+            for (int[] flight : flights) {
+                int u = flight[0];
+                int v = flight[1];
+                int w = flight[2];
+                if (cheapest_price[u] == Integer.MAX_VALUE) continue;
+                if (cheapest_price[u] + w < tempPrices[v]) tempPrices[v] = cheapest_price[u] + w;
+            }
+            cheapest_price = tempPrices;
+        }
+
+        return cheapest_price[dst] == Integer.MAX_VALUE ? -1 : cheapest_price[dst];
+    }
+}
