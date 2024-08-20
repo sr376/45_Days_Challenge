@@ -1,0 +1,44 @@
+class Point implements Comparable<Point> {
+    int x;
+    int y;
+    int distance;
+
+    public Point(int x, int y, int distance) {
+        this.x = x;
+        this.y = y;
+        this.distance = distance;
+    }
+
+    @Override
+    public int compareTo(Point obj) {
+        return obj.distance - this.distance;
+    }
+}
+
+class Solution {
+    public int[][] kClosest(int[][] points, int k) {
+        List<Point> list = new ArrayList<Point>();
+        for (int i = 0; i < k; i++) {
+            list.add(new Point(points[i][0], points[i][1], points[i][0] * points[i][0] + points[i][1] * points[i][1]));
+        }
+
+        PriorityQueue<Point> pq = new PriorityQueue<Point>(list);
+
+        for (int i = k; i < points.length; i++) {
+            Point maxPoint = pq.peek();
+            int distance = points[i][0] * points[i][0] + points[i][1] * points[i][1];
+            if (distance < maxPoint.distance) {
+                pq.poll();
+                pq.add(new Point(points[i][0], points[i][1], distance));
+            }
+        }
+        
+        Point[] fp = pq.toArray(new Point[0]);
+        for (int i = 0; i < k; i++) {
+            points[i][0] = fp[i].x;
+            points[i][1] = fp[i].y;
+        }
+
+        return Arrays.copyOf(points, k);
+    }
+}
