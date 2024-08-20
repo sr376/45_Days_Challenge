@@ -1,0 +1,61 @@
+class Solution
+{
+    private String kahn(Map<Character, List<Character>> adjMap, int K){
+        Map<Character, Integer> inOrder = new HashMap<>();
+        Queue<Character> q = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        
+        adjMap.forEach((key, val) -> {
+            val.stream().forEach(ch -> {
+                int cnt = inOrder.getOrDefault(ch, 0);
+                inOrder.put(ch, cnt+1);
+            });
+        });
+        
+        for(int i = 0; i < K; i++){
+            int cnt = inOrder.getOrDefault((char)(i + 'a'), 0);
+            if(cnt == 0){
+                q.offer((char)(i + 'a'));
+            }
+        }
+
+        while(!q.isEmpty()){
+
+            char curr = q.poll();
+            sb.append(curr);
+            for(Character ch: adjMap.getOrDefault(curr, new ArrayList<>())){
+                int cnt = inOrder.getOrDefault(ch, 0);
+                cnt--;
+                inOrder.put(ch, cnt);
+                if(cnt == 0) q.offer(ch);
+            }
+        }
+
+        return (sb.length() == K) ? sb.toString() : "";
+    }
+    
+    public String findOrder(String [] dict, int N, int K)
+    {
+        Map<Character, List<Character>> adjMap = new HashMap<>();
+        
+        for(int i = 0; i < N - 1; i++){
+            String s1 = dict[i];
+            String s2 = dict[i+1];
+            
+            int len = Math.min(s1.length(), s2.length());
+            int j = 0;
+            
+            for(; j < len; j++){
+                if(s1.charAt(j) != s2.charAt(j)) break;
+            }
+            if(j == len) continue;
+            
+            List<Character> adjs = adjMap.getOrDefault(s1.charAt(j), new ArrayList<>());
+            adjs.add(s2.charAt(j));
+            adjMap.put(s1.charAt(j), adjs);
+            
+        }
+        
+        return kahn(adjMap, K);
+    }
+}
