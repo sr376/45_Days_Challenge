@@ -1,0 +1,36 @@
+class Solution{
+    static ArrayList<ArrayList<String>> displayContacts(int n,  String contact[], String s)
+    {
+
+      ArrayList<ArrayList<String>> result = new ArrayList<>();
+        ArrayList<String> currentContacts = new ArrayList<>();
+
+        Collections.addAll(currentContacts, contact);
+
+        for (int j = 1; j <= s.length(); j++) {
+            String prefix = s.substring(0, j);
+            ArrayList<String> res = new ArrayList<>();
+
+            for (String c : currentContacts) {
+                if (c.startsWith(prefix) && !res.contains(c)) {
+                    res.add(c);
+                }
+            }
+
+            Collections.sort(res);
+
+            if (res.isEmpty()) {
+                ArrayList<String> zeroResult = new ArrayList<>();
+                zeroResult.add("0");
+                result.add(zeroResult);
+            } else {
+                result.add(res);
+            }
+
+            currentContacts = res;
+        }
+
+        return result;
+
+    }
+}
