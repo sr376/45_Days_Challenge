@@ -1,0 +1,41 @@
+class NumArray {
+    private int[] fenwickTree;
+    private int[] nums;
+    private int n;
+
+    public NumArray(int[] nums) {
+        this.nums = nums;
+        this.n = nums.length;
+        fenwickTree = new int[n + 1]; 
+
+        for (int i = 0; i < n; i++) {
+            add(i + 1, nums[i]); 
+        }
+    }
+
+    private void add(int index, int val) {
+        while (index <= n) {
+            fenwickTree[index] += val;
+            index += index & -index;
+        }
+    }
+
+    public void update(int index, int val) {
+        int diff = val - nums[index];
+        nums[index] = val;
+        add(index + 1, diff); 
+    }
+
+    private int sum(int index) {
+        int sum = 0;
+        while (index > 0) {
+            sum += fenwickTree[index];
+            index -= index & -index;
+        }
+        return sum;
+    }
+
+    public int sumRange(int left, int right) {
+        return sum(right + 1) - sum(left);
+    }
+}
