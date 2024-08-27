@@ -2,7 +2,7 @@ Find paths from corner cell to middle cell in maze
 
 Given a square maze containing positive numbers, find all paths from a corner cell (any of the extreme four corners) to the middle cell. We can move exactly n steps from a cell in 4 directions i.e. North, East, West and South where n is value of the cell, 
 
-We can move to mat[i+n][j], mat[i-n][j], mat[i][j+n], and mat[i][j-n] from a cell mat[i][j] where n is value of mat[i][j].
+We can move to mat[i+n][j], mat[i-n][j], mat[i][j+n],and mat[i][j-n] from a cell mat[i][j] where n is value of mat[i][j].
 
 Example
 
